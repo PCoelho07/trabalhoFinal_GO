@@ -39,6 +39,11 @@ func maria(megafone chan bool) {
 	aprontar("Maria")
 }
 
+func gerenciador() {
+	
+}
+
+
 func alarme(megafone chan bool) {
 
 
