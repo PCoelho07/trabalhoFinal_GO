@@ -1,0 +1,7 @@
+min	segundos
+1,5  -> 60
+3    -> 180
+
+calçar tenis de corrida: 30 a 45 segundos
+tempo para se aprontar: 60 a 180 segundos
+alarme: 60 segundos
