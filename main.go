@@ -17,6 +17,13 @@ func aprontar(nome string) (bool, int) {
 	return true, t
 }
 
+func calcar_tenis(nome string) (bool, int) {
+	fmt.Println(nome + "começou a calçar seu tênis")
+	t := random(30, 45)
+	time.Sleep(t * time.Seconds)
+
+	return true, t
+}
 
 func random(min, max int) int {
 	rand.Seed(time.Now().Unix())
@@ -24,19 +31,35 @@ func random(min, max int) int {
 }
 
 
-func ana(megafone chan bool) {
+func ana(megafone_1 chan int) {
 	flag, t_a := aprontar("Ana")
 
 	if flag == true {
-		megafone <- true
-		flag_1, t_ct := calçar_tenis("Ana")
 		fmt.Println("Ana demorou " + t_a + " segundos para se preparar")
+		megafone_1 <- 0
+		flag_1, t_ct := calçar_tenis("Ana")
+
+		if flag_1 == true {
+			fmt.Println("Ana demorou " + t_ct + " segundos para calçar seu tenis")			
+			megafone_1 <- 1		
+		}
 	}
 	
 }
 
-func maria(megafone chan bool) {
-	aprontar("Maria")
+func maria(megafone_2 chan int) {
+	flag, t_a := aprontar("Maria")
+
+	if flag == true {
+		fmt.Println("Maria demorou " + t_a + " segundos para se preparar")
+		megafone_2 <- 0
+		flag_1, t_ct := calçar_tenis("Maria")
+
+		if flag_1 == true {
+			fmt.Println("Maria demorou " + t_ct + " segundos para calçar seu tenis")			
+			megafone_2 <- 1		
+		}
+	}
 }
 
 func gerenciador() {
