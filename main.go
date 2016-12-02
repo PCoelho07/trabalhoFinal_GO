@@ -31,13 +31,18 @@ func random(min, max int) int {
 }
 
 
-func ana(megafone_1 chan int) {
+func ana(megafone_1 chan int, t chan bool) {
+	var flag_1 bool
+	var t_ct int
 	flag, t_a := aprontar("Ana")
 
 	if flag == true {
 		fmt.Println("Ana demorou",t_a,"segundos para se preparar")
 		megafone_1 <- 0
-		flag_1, t_ct := calcar_tenis("Ana")
+		
+		if <-t == false {
+			flag_1, t_ct = calcar_tenis("Ana")
+		}
 
 		if flag_1 == true {
 			fmt.Println("Ana demorou",t_ct,"segundos para calçar seu tenis")			
@@ -47,13 +52,18 @@ func ana(megafone_1 chan int) {
 	
 }
 
-func maria(megafone_2 chan int) {
+func maria(megafone_2 chan int, t chan bool) {
+	var flag_1 bool
+	var t_ct int
 	flag, t_a := aprontar("Maria")
 
 	if flag == true {
 		fmt.Println("Maria demorou",t_a,"segundos para se preparar")
 		megafone_2 <- 0
-		flag_1, t_ct := calcar_tenis("Maria")
+
+		if <-t == false {
+			flag_1, t_ct = calcar_tenis("Maria")
+		}
 
 		if flag_1 == true {
 			fmt.Println("Maria demorou",t_ct,"segundos para calçar seu tenis")		
@@ -79,8 +89,8 @@ func main() {
 	m_2 := make(chan int)
 	timeout := make(chan bool)
 
-	go ana(m_1)
-	go maria(m_2)
+	go ana(m_1, timeout)
+	go maria(m_2, timeout)
 
 	msg_1 := <-m_1
 	msg_2 := <-m_2
@@ -88,6 +98,7 @@ func main() {
 	if msg_1 == 0 && msg_2 == 0 {
 		
 		go func() {
+			timeout <- false
 			fmt.Println("Alarme foi acionado")
 			fmt.Println("Alarme está em contagem regressiva")
 			time.Sleep(6 * time.Second)
